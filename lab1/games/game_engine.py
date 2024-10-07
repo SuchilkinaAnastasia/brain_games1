@@ -1,27 +1,38 @@
 """Модуль для управления логикой игры."""
 MAX_ROUNDS = 3
 
-def run_game(game, name):
-    """Основной цикл для всех игр"""
+def greet_player(name):
+    """Приветствие игрока."""
     print(f"Hello, {name}! Let's start the game.")
+
+def get_user_answer():
+    """Запрос и проверка корректности ответа пользователя."""
+    while True:
+        try:
+            return int(input("Your answer: "))
+        except ValueError:
+            print("Invalid choice. Please enter a number.")
+
+def check_answer(user_answer, correct_answer):
+    """Проверка правильности ответа пользователя."""
+    if user_answer == correct_answer:
+        print("Correct!")
+        return True
+    else:
+        print(f"'{user_answer}' is wrong. The correct answer was '{correct_answer}'.")
+        return False
+
+def run_game(game, name):
+    """Основной цикл для всех игр."""
+    greet_player(name)
 
     for _ in range(MAX_ROUNDS):
         question, correct_answer = game()
         print(f"Question: {question}")
 
-        # Цикл для ввода ответа пользователя с проверкой на корректность
-        while True:
-            try:
-                user_answer = int(input("Your answer: "))
-                break  # Если ввод корректен, выходим из цикла
-            except ValueError:
-                print("Invalid choice. Please enter a number.")
+        user_answer = get_user_answer()
 
-        # Проверка правильности ответа
-        if user_answer == correct_answer:
-            print("Correct!")
-        else:
-            print(f"'{user_answer}' is wrong. The correct answer was '{correct_answer}'.")
+        if not check_answer(user_answer, correct_answer):
             print(f"Let's try again, {name}.")
             return False  # Игра завершится при неправильном ответе
 
